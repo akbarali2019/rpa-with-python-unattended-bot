@@ -82,6 +82,46 @@ def confirm_action():
         root.destroy()
     else:
         messagebox.showerror("Error", "All fields are required.")
+
+# Update data in the database
+def update_data(company_code, user_code, user_name, user_password, automation_time):
+
+    folder_path_for_db = setup_automation_folder()
+    DB_PATH =  os.path.join(folder_path_for_db, "automation.db")
+    print(f"DB_PATH: {DB_PATH}")
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    # Update query based on iLabUserCode (can change this to another unique identifier)
+    cursor.execute('''UPDATE users
+                      SET companyCode = ?, iLabUserName = ?, iLabUserPassword = ?, setAutomationTime = ?
+                      WHERE iLabUserCode = ?''', 
+                      (company_code, user_name, user_password, automation_time, user_code))
+
+    if cursor.rowcount == 0:
+        messagebox.showerror("Error", "User not found!")
+    else:
+        messagebox.showinfo("Success", "User info updated successfully!")
+
+    conn.commit()
+    conn.close()
+
+def update_action():
+    company_code = company_code_entry.get()
+    user_code = user_code_entry.get()
+    user_name = user_name_entry.get()
+    user_password = user_password_entry.get()
+    automation_time = automation_time_entry.get()
+
+    if company_code and user_code and user_name and user_password and automation_time:
+        update_data(company_code, user_code, user_name, user_password, automation_time)
+        root.destroy()
+    else:
+        messagebox.showerror("Error", "All fields are required.")
+
+def cancel_action():
+    root.destroy()
+    
         
 if __name__ == "__main__":
     folder_path_for_db = setup_automation_folder()
