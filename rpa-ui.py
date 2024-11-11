@@ -121,6 +121,59 @@ def update_action():
 
 def cancel_action():
     root.destroy()
+
+
+# Function to center the window on the screen
+def center_window(width=550, height=400):
+    # Get the screen's width and height
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+
+    # Calculate the x and y coordinates to center the window
+    x = (screen_width // 2) - (width // 2)
+    y = (screen_height // 2) - (height // 2)
+
+    # Set the window size and position it at the center of the screen
+    root.geometry(f"{width}x{height}+{x}+{y}")
+
+# Create the UI window
+
+# Define the font style
+root = tk.Tk()
+root.title(" Required Input for Automation ")
+#root.configure(bg='black')
+center_window(550, 400)
+
+# Labels and Entry Fields
+tk.Label(root, text="사업자 번호:", width=20).grid(row=0, column=0, padx=10, pady=10)
+company_code_entry = tk.Entry(root, width=40)
+company_code_entry.grid(row=0, column=1, padx=10, pady=10)
+
+tk.Label(root, text="아이랩 긱관 코드:", width=20).grid(row=1, column=0, padx=10, pady=10)
+user_code_entry = tk.Entry(root, width=40)
+user_code_entry.grid(row=1, column=1, padx=10, pady=10)
+
+tk.Label(root, text="아이랩 User ID:", width=20).grid(row=2, column=0, padx=10, pady=10)
+user_name_entry = tk.Entry(root, width=40)
+user_name_entry.grid(row=2, column=1, padx=10, pady=10)
+
+tk.Label(root, text="아이랩 Password:", width=20).grid(row=3, column=0, padx=10, pady=10)
+user_password_entry = tk.Entry(root, width=40, show="*")
+user_password_entry.grid(row=3, column=1, padx=10, pady=10)
+
+tk.Label(root, text="아이랩 Automation Time:", width=20).grid(row=4, column=0, padx=10, pady=10)
+automation_time_entry = tk.Entry(root, width=40)
+automation_time_entry.grid(row=4, column=1, padx=10, pady=10)
+
+# Buttons with desired positions and layout
+confirm_button = tk.Button(root, text="Confirm", width=12, command=confirm_action)
+confirm_button.grid(row=5, column=0, padx=20, pady=20, sticky="e")
+
+cancel_button = tk.Button(root, text="Cancel", width=12, command=cancel_action)
+cancel_button.grid(row=5, column=1, padx=10, pady=20, sticky="w")
+
+update_button = tk.Button(root, text="Update", width=12, command=update_action)
+update_button.grid(row=5, column=2, padx=0, pady=20, sticky="w")
     
         
 if __name__ == "__main__":
