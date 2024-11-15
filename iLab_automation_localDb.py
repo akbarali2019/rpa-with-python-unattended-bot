@@ -43,6 +43,54 @@ class CheckLocalDb:
         else:
             print(f"No user found with companyCode: {company_code}")
             return None
+
+    def check_inquiry_exists_for_company(inquiry_number, company_code):
+            RPA_DB_DIRECTORY_DB_FILE = Helper.get_automation_db_path()
+            conn = sqlite3.connect(RPA_DB_DIRECTORY_DB_FILE)
+            cursor = conn.cursor()
+    
+            # Get the userId associated with the companyCode
+            cursor.execute('''SELECT userId FROM users WHERE companyCode = ?''', (company_code,))
+            user = cursor.fetchone()
+    
+            if user:
+                user_id = user[0]
+                
+                # Check if the inquiry number exists for this userId (specific to the company)
+                cursor.execute('''SELECT inquiryId FROM inquiries WHERE inquiryNumber = ? AND userId = ?''', 
+                            (inquiry_number, user_id))
+                inquiry = cursor.fetchone()
+                
+                conn.close()
+    
+                if inquiry:
+                    return True  # Inquiry number exists for this company
+                else:
+                    return False  # Inquiry number does not exist for this company
+            else:
+                conn.close()
+                return False  # No user found for this company
+    
+    
+        def insert_inquiry(inquiry_number, company_code):
+            # Get userId based on companyCode
+            user_id = CheckLocalDb.get_user_id_by_company_code(company_code)
+    
+            if user_id is not None:
+                RPA_DB_DIRECTORY_DB_FILE = Helper.get_automation_db_path()
+                conn = sqlite3.connect(RPA_DB_DIRECTORY_DB_FILE)
+                cursor = conn.cursor()
+    
+                # Insert the inquiry since it does not exist
+                cursor.execute('''INSERT INTO inquiries (inquiryNumber, userId) 
+                                VALUES (?, ?)''', 
+                                (inquiry_number, user_id))
+    
+                conn.commit()
+                conn.close()
+                print(f"Inquiry number '{inquiry_number}' successfully inserted.")
+            else:
+                print(f"No user found with companyCode: {company_code}")
         
 
     
