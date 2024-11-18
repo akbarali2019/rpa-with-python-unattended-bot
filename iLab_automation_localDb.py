@@ -91,6 +91,55 @@ class CheckLocalDb:
                 print(f"Inquiry number '{inquiry_number}' successfully inserted.")
             else:
                 print(f"No user found with companyCode: {company_code}")
+
+
+
+        # After cpompletion of automation successfully for the specific samplingRegNumber, update the inquiry status into APPROVED from PENDING
+        def update_samplingStatus(inquiry_number, new_status, company_code):
+            print(f"inquiry_number is: {inquiry_number}")
+            user_id = CheckLocalDb.get_user_id_by_company_code(company_code)
+    
+            if user_id is not None:
+                RPA_DB_DIRECTORY_DB_FILE = Helper.get_automation_db_path()
+                conn = sqlite3.connect(RPA_DB_DIRECTORY_DB_FILE)
+                cursor = conn.cursor()
+    
+                # Update the status of the inquiry
+                cursor.execute('''UPDATE inquiries
+                                SET samplingStatus = ?
+                                WHERE inquiryNumber = ? AND userId = ?''', (new_status, inquiry_number, user_id))
+                if cursor.rowcount == 0:
+                    print(f"No inquiry found with inquiryNumber: {inquiry_number}")
+                else:
+                    print(f"samplingStatus of inquiry {inquiry_number} updated to {new_status}")
+    
+                conn.commit()
+                conn.close()
+            else:
+                print(f"No user found with companyCode: {company_code}")
+    
+        def update_inquiryStatus(inquiry_number, new_status, company_code):
+                print(f"inquiry_number is: {inquiry_number}")
+                user_id = CheckLocalDb.get_user_id_by_company_code(company_code)
+    
+                if user_id is not None:
+                    RPA_DB_DIRECTORY_DB_FILE = Helper.get_automation_db_path()
+                    conn = sqlite3.connect(RPA_DB_DIRECTORY_DB_FILE)
+                    cursor = conn.cursor()
+    
+                    # Update the status of the inquiry
+                    cursor.execute('''UPDATE inquiries
+                                    SET inquiryStatus = ?
+                                    WHERE inquiryNumber = ? AND userId = ?''', (new_status, inquiry_number, user_id))
+                    if cursor.rowcount == 0:
+                        print(f"No inquiry found with inquiryNumber: {inquiry_number}")
+                    else:
+                        print(f"inquiryStatus of inquiry {inquiry_number} updated to {new_status}")
+    
+                    conn.commit()
+                    conn.close()
+                else:
+                    print(f"No user found with companyCode: {company_code}") 
         
 
     
