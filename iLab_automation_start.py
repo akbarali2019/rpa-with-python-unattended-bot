@@ -14,7 +14,7 @@ class StartILabAutomation:
         hasNextSamplingInquiries = True
         # Api call for kefalab.com to get started with RPA
         while hasNextSamplingInquiries:
-            url = "http://192.168.0.30:8080/api/v1/auth/samplings/search?pageNumber=1"
+            url = ""
             self.logger.info(f"start_iLab_automation ==> Call for api: {url} to get iLab sampling data")
             response = requests.get(url)
             # check api call is successfull and then proceed if it is. Otherwise log about it in the 'else' statement 
