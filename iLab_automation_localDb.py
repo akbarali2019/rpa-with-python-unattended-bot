@@ -186,7 +186,30 @@ class CheckLocalDb:
                 conn.commit()
                 conn.close()
             else:
-                print(f"No user found with companyCode: {company_code}")     
+                print(f"No user found with companyCode: {company_code}")
+
+
+        def get_user_details_by_company_code(company_code):
+                RPA_DB_DIRECTORY_DB_FILE = Helper.get_automation_db_path()
+                conn = sqlite3.connect(RPA_DB_DIRECTORY_DB_FILE)
+                cursor = conn.cursor()
+        
+                # Execute the query to get iLabUserCode, iLabUserName, and iLabUserPassword
+                cursor.execute('''SELECT iLabUserCode, iLabUserName, iLabUserPassword 
+                                FROM users 
+                                WHERE companyCode = ?''', (company_code,))
+                
+                # Fetch the result
+                result = cursor.fetchone()
+                conn.close()
+        
+                if result:
+                    iLab_user_code = result[0]
+                    iLab_user_name = result[1]
+                    iLab_user_password = result[2]
+                    return iLab_user_code, iLab_user_name, iLab_user_password
+                else:
+                    return None  # Return None if no user found
 
       
         
