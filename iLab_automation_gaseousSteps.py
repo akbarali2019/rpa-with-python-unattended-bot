@@ -14,7 +14,7 @@ class GaseousSteps:
         self.logger = LoggerConfig.setup_logger()
 
     def apiCallForGaseousSteps(self, iLab, samplingId, samplingRegNum):
-        gaseousUrl = f"http://192.168.0.30:8080/api/v1/auth/gaseous/search?samplingId={samplingId}"
+        gaseousUrl = f""
         self.logger.info(f"apiCallForGaseousSteps ==> Call for api: {gaseousUrl} to get iLab sampling gaseous data")
         print(f"Gaseous Url: {gaseousUrl}")
         gaseousResponse = requests.get(gaseousUrl)
