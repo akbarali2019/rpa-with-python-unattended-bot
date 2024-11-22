@@ -7,7 +7,7 @@ class NotifyCompletion:
         self.logger = LoggerConfig.setup_logger()
 
     def notify_kefalab(self, samplingId):
-        notificationUrl = f"http://192.168.0.30:8080/api/v1/auth/samplings/state/{samplingId}"
+        notificationUrl = f""
         self.logger.info(f"notify_kefalab ==> Call for api: {notificationUrl} to update iLab status of sampling into APPROVED")
         updateState = {"state": "APPROVED"}
         response = requests.put(notificationUrl, json=updateState)
