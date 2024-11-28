@@ -3,7 +3,7 @@ from tkinter import messagebox
 import sqlite3
 import os
 
-# Db parent folder setup
+
 def setup_automation_folder():
     # Get the path to the user's desktop
     desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
@@ -35,6 +35,8 @@ def init_db(folder_path_for_db):
                         iLabUserCode TEXT UNIQUE,   -- Make this unique
                         iLabUserName TEXT,
                         iLabUserPassword TEXT,
+                        ecoLabUserName TEXT,
+                        ecoLabUserPassword TEXT,
                         setAutomationTime TEXT)''')
     
     # Create inquiries table with foreign key userId
@@ -44,38 +46,39 @@ def init_db(folder_path_for_db):
                         inquiryNumber TEXT,
                         samplingStatus TEXT DEFAULT 'PENDING',
                         inquiryStatus TEXT DEFAULT 'PENDING',
+                        ecolabStatus TEXT DEFAULT 'PENDING',
                         FOREIGN KEY(userId) REFERENCES users(userId))''')
 
     conn.commit()
     conn.close()
 
-
 # Store data into the database
-def store_data(company_code, user_code, user_name, user_password, automation_time):
+def store_data(company_code, user_code, user_name, user_password, eco_user_name, eco_user_password, automation_time):
     folder_path_for_db = setup_automation_folder()
     DB_PATH =  os.path.join(folder_path_for_db, "automation.db")
     print(f"DB_PATH: {DB_PATH}")
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
-    cursor.execute('''INSERT INTO users (companyCode, iLabUserCode, iLabUserName, iLabUserPassword, setAutomationTime)
-                      VALUES (?, ?, ?, ?, ?)''', 
-                      (company_code, user_code, user_name, user_password, automation_time))
+    cursor.execute('''INSERT INTO users (companyCode, iLabUserCode, iLabUserName, iLabUserPassword, ecoLabUserName, ecoLabUserPassword, setAutomationTime)
+                      VALUES (?, ?, ?, ?, ?, ?, ?)''', 
+                      (company_code, user_code, user_name, user_password, eco_user_name, eco_user_password, automation_time))
 
     conn.commit()
     conn.close()
 
-# Confirm action
 def confirm_action():
     company_code = company_code_entry.get()
     user_code = user_code_entry.get()
     user_name = user_name_entry.get()
     user_password = user_password_entry.get()
+    eco_user_name = eco_user_name_entry.get()
+    eco_user_password = eco_user_password_entry.get()  
     automation_time = automation_time_entry.get()
 
-    if company_code and user_code and user_name and user_password and automation_time:
+    if company_code and user_code and user_name and user_password and automation_time and eco_user_name and eco_user_password:
         try:
-            store_data(company_code, user_code, user_name, user_password, automation_time)
+            store_data(company_code, user_code, user_name, user_password, eco_user_name, eco_user_password, automation_time)
             messagebox.showinfo("Success", "Data saved successfully!")
         except sqlite3.IntegrityError:
             messagebox.showerror("Error", "User with this 사업자 번호 already exists!")
@@ -84,7 +87,7 @@ def confirm_action():
         messagebox.showerror("Error", "All fields are required.")
 
 # Update data in the database
-def update_data(company_code, user_code, user_name, user_password, automation_time):
+def update_data(company_code, user_code, user_name, user_password, eco_user_name, eco_user_password, automation_time):
 
     folder_path_for_db = setup_automation_folder()
     DB_PATH =  os.path.join(folder_path_for_db, "automation.db")
@@ -94,9 +97,9 @@ def update_data(company_code, user_code, user_name, user_password, automation_ti
 
     # Update query based on iLabUserCode (can change this to another unique identifier)
     cursor.execute('''UPDATE users
-                      SET companyCode = ?, iLabUserName = ?, iLabUserPassword = ?, setAutomationTime = ?
+                      SET companyCode = ?, iLabUserName = ?, iLabUserPassword = ?, ecoLabUserName = ?, ecoLabUserPassword = ?, setAutomationTime = ?
                       WHERE iLabUserCode = ?''', 
-                      (company_code, user_name, user_password, automation_time, user_code))
+                      (company_code, user_name, user_password, eco_user_name, eco_user_password, automation_time, user_code))
 
     if cursor.rowcount == 0:
         messagebox.showerror("Error", "User not found!")
@@ -111,17 +114,18 @@ def update_action():
     user_code = user_code_entry.get()
     user_name = user_name_entry.get()
     user_password = user_password_entry.get()
+    eco_user_name = eco_user_name_entry.get()
+    eco_user_password = eco_user_password_entry.get()  
     automation_time = automation_time_entry.get()
 
-    if company_code and user_code and user_name and user_password and automation_time:
-        update_data(company_code, user_code, user_name, user_password, automation_time)
+    if company_code and user_code and user_name and user_password and automation_time and eco_user_name and eco_user_password:
+        update_data(company_code, user_code, user_name, user_password, eco_user_name, eco_user_password, automation_time)
         root.destroy()
     else:
         messagebox.showerror("Error", "All fields are required.")
 
 def cancel_action():
     root.destroy()
-
 
 # Function to center the window on the screen
 def center_window(width=550, height=400):
@@ -161,21 +165,28 @@ tk.Label(root, text="아이랩 Password:", width=20).grid(row=3, column=0, padx=
 user_password_entry = tk.Entry(root, width=40, show="*")
 user_password_entry.grid(row=3, column=1, padx=10, pady=10)
 
-tk.Label(root, text="아이랩 Automation Time:", width=20).grid(row=4, column=0, padx=10, pady=10)
+tk.Label(root, text="에코랩 User ID:", width=20).grid(row=4, column=0, padx=10, pady=10)
+eco_user_name_entry = tk.Entry(root, width=40)
+eco_user_name_entry.grid(row=4, column=1, padx=10, pady=10)
+
+tk.Label(root, text="에코랩 Password:", width=20).grid(row=5, column=0, padx=10, pady=10)
+eco_user_password_entry = tk.Entry(root, width=40, show="*")
+eco_user_password_entry.grid(row=5, column=1, padx=10, pady=10)
+
+tk.Label(root, text="아이랩 Automation Time:", width=20).grid(row=6, column=0, padx=10, pady=10)
 automation_time_entry = tk.Entry(root, width=40)
-automation_time_entry.grid(row=4, column=1, padx=10, pady=10)
+automation_time_entry.grid(row=6, column=1, padx=10, pady=10)
 
 # Buttons with desired positions and layout
 confirm_button = tk.Button(root, text="Confirm", width=12, command=confirm_action)
-confirm_button.grid(row=5, column=0, padx=20, pady=20, sticky="e")
+confirm_button.grid(row=7, column=0, padx=20, pady=20, sticky="e")
 
 cancel_button = tk.Button(root, text="Cancel", width=12, command=cancel_action)
-cancel_button.grid(row=5, column=1, padx=10, pady=20, sticky="w")
+cancel_button.grid(row=7, column=1, padx=10, pady=20, sticky="w")
 
 update_button = tk.Button(root, text="Update", width=12, command=update_action)
-update_button.grid(row=5, column=2, padx=0, pady=20, sticky="w")
-    
-        
+update_button.grid(row=7, column=2, padx=0, pady=20, sticky="w")
+
 if __name__ == "__main__":
     folder_path_for_db = setup_automation_folder()
     init_db(folder_path_for_db)  # Ensure the database and tables are set up
