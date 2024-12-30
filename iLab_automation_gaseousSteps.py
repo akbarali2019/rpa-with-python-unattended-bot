@@ -7,7 +7,7 @@ from iLab_automation_log import LoggerConfig
 from iLab_automation_notifiyCompletion import NotifyCompletion
 from ilab_automation_checkLocalDbStatusOfSamplingRegNumber import CheckLocalDbStatus
 
-DEALY_TIME = 0
+DEALY_TIME = 0.005
 class GaseousSteps:
 
     def __init__(self):
