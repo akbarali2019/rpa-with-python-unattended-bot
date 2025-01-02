@@ -8,7 +8,7 @@ def setup_automation_folder():
     # Get the path to the user's desktop
     desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
     # Define the path for the KnexusAutomation folder
-    knexus_folder_path = os.path.join(desktop_path, "KnexusAutomation")
+    knexus_folder_path = os.path.join(desktop_path, "KnexusAutomation") # later changeable
 
     # Check if the KnexusAutomation folder exists, if not, create it
     if not os.path.exists(knexus_folder_path):
