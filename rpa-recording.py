@@ -81,3 +81,48 @@ class ScreenRecorder:
                         print(f"Deleted old file: {file_path}")
                 except (IndexError, ValueError):
                     print(f"Skipping file with invalid format: {file}")
+
+
+
+
+
+################# MAIN CLASS EDITS
+# # Main RPA logic
+# if __name__ == "__main__":
+#     logger = LoggerConfig.setup_logger()
+#     logger.info("************************************************************************************************************")
+#     logger.info("************************************************************************************************************")
+#     logger.info("")
+#     logger.info("**************** Starting RPA ****************")
+
+#     # Initialize the screen recorder
+#     recorder = ScreenRecorder()
+#     try:
+#         # Start recording
+#         logger.info("**************** Starting RPA recorder****************")
+#         recorder.start()
+#         logger.info("**************** Started RPA recorder****************")
+#         # Clean up old files before starting
+#         recorder.cleanup_old_files()
+
+#         # RPA process execution
+#         processes = [
+#             ("Inquiry", run_inquiry_automation),
+#             ("Sampling", run_sampling_automation),
+#             ("Ecolab", run_ecolab_automation),
+#         ]
+
+#         for process_name, process_func in processes:
+#             print(f"Starting {process_name} Process...")
+#             if not process_func():
+#                 print(f"{process_name} Process failed. Stopping further execution.")
+#                 break
+#         else:
+#             print("All processes completed successfully!")
+#             logger.info("All processes completed successfully!")
+#             logger.info("")
+#             logger.info("")
+#             logger.info("")
+#     finally:
+#         # Stop the screen recording
+#         recorder.stop()
