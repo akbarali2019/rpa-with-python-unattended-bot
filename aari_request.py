@@ -13,7 +13,7 @@ aari_driver = webdriver.Chrome()
 
 ################################################## STEP 2: Visit to AARI
 print('##### Visiting Automation Anywhere AARI')
-url = "https://community.cloud.automationanywhere.digital/aari/#/processes?processInfoId=10699&name=process-test-1"
+url = "****"
 aari_driver.execute("get", {'url': url})
 time.sleep(2)
 
