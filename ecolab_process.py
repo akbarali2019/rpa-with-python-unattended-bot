@@ -6,7 +6,7 @@ from iLab_automation_log import LoggerConfig
 import time
 
 STATUS_APPROVED = "APPROVED"
-COMPANY_CODE = "4800804"
+COMPANY_CODE = "*****"
 
 class EcolabWeb:
 
@@ -105,7 +105,7 @@ class EcolabWeb:
             ecoLabAutos.input_meaMemo(driver, meaMemo)
 
             # download fiels from kefalab.com via API call
-            api_base_url = "https://kefalab.com/api/v1/files/rpa/download"
+            api_base_url = "*****"
             DownloadFiles.fileDownloadByAPI(self, api_base_url, samplingId)
             
             #Path to the folder containing files
