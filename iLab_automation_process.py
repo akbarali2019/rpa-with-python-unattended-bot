@@ -37,6 +37,17 @@ class ILabAutomationProcesses:
         pyautogui.press('enter')
         time.sleep(3) # do not decrease
 
+     # Validation check_afterInquiryNumber
+     def check_afterInquiryNumber(self):
+        pyautogui.press('tab', 86)
+        time.sleep(1)
+        pyautogui.hotkey('ctrl', 'c')
+        time.sleep(0.5) # do not decrease
+        after_inquiry_number = pyperclip.paste()
+        print(f"AFTER Inquiry Number: {after_inquiry_number}")
+        time.sleep(0.5) # do not decrease
+        return after_inquiry_number
+
     # Go to Sampling Page
     def go_to_sampling_page(self):
         pyautogui.press('alt')
