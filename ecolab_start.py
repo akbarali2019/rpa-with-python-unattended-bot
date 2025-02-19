@@ -3,6 +3,7 @@ from iLab_automation_log import LoggerConfig
 from .ecolab_dbCheck import EcoLabDbCheck
 from .ecolab_process_detailed import EcoLabDetailedAutomations
 
+# ATTENTION! Company Code should be retreived by API call from the kefalab.com, after the version is being updated. 
 COMPANY_CODE = "****"
 API_URL = "*******"
 
