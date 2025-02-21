@@ -345,6 +345,61 @@ class EcoLabDetailedAutomations:
             else:
                 print(f"Skipped file: {file_name} (Not a PDF)")
 
+
+    # Updated to Close file upload dialog 
+    def new_upload_files(self, driver, folder_path):
+        # Loop through all files in the folder
+        for file_name in os.listdir(folder_path):
+            # Ensure it's a file and a PDF
+            if file_name.lower().endswith(".pdf"):
+                file_path = os.path.join(folder_path, file_name)  # Construct full file path
+
+                if os.path.isfile(file_path):
+                    if "report" in file_name.lower():
+                        # Use the XPath for files that include "report"
+                        add_file_xpath = "//*[@id='fileArea']/section/div/div[1]/input[1]"
+                        print(f"Uploading file with 'report': {file_path}")
+                    else:
+                        # Use the XPath for files that do not include "report"
+                        add_file_xpath = "//*[@id='fileAreaAdd']/section/div/div[1]/input[1]"
+                        print(f"Uploading file without 'report': {file_path}")
+
+                    # Step 1: Click the appropriate "Add File" button
+                    add_file_button = WebDriverWait(driver, 10).until(
+                        EC.element_to_be_clickable((By.XPATH, add_file_xpath))
+                    )
+                    add_file_button.click()
+
+                    # Step 2: Wait for the file dialog to open
+                    time.sleep(2)  # Adjust based on dialog opening time
+
+                    # Step 3: Upload the file by sending its path
+                    file_input = WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.XPATH, "//input[@type='file']"))
+                    )
+                    file_input.send_keys(file_path)
+                    
+                    time.sleep(2) # new
+
+                    #time.sleep(5) # new
+                    pyautogui.press("esc") # new
+                    #time.sleep(1) # new
+                    #print(f"Closed file upload dialog.")
+                     
+
+                    # Navigate the UI after uploading
+                    #####pyautogui.press('tab', 3, 0.5)
+                    #####pyautogui.press('enter')
+
+
+                    # Step 4: Wait for any success confirmation (if applicable)
+                    ####time.sleep(5)  # Adjust as needed for processing delays
+                time.sleep(5)
+            else:
+                print(f"Skipped file: {file_name} (Not a PDF)")
+                return
+        print(f"Closed file upload dialog.")
+
     def temp_save(self, driver):
         print("*************temp_save SAVING")
         time.sleep(3)
