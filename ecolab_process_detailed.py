@@ -122,12 +122,39 @@ class EcoLabDetailedAutomations:
         reg_number_input.send_keys(Keys.ENTER)  # Simulate Enter (or replace with another key if needed)
         time.sleep(2.5) # don't decrease
 
-    def regNumber_based_mouseClick(self, driver):
-        # Wait for the canvas or grid to load
-        WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, "//*[@id='gridVisistPlanList']/div/canvas"))
-        )
+    # def regNumber_based_mouseClick(self, driver):
+    #     # Wait for the canvas or grid to load
+    #     WebDriverWait(driver, 10).until(
+    #         EC.presence_of_element_located((By.XPATH, "//*[@id='gridVisistPlanList']/div/canvas"))
+    #     )
         
+    #     time.sleep(0.5)
+    #     pyautogui.moveTo(430, 465, 0.5) # 접수번호 table row click
+    #     time.sleep(0.5)
+    #     pyautogui.doubleClick()
+
+    #     time.sleep(1.5) #added 2024-01-09
+
+    #     # Wait for the tab element to be clickable
+    #     tab_element = WebDriverWait(driver, 10).until(
+    #         EC.element_to_be_clickable((By.ID, "ui-id-2"))  # Using the `id` attribute
+    #     )
+
+    #     time.sleep(1.5) #added 2024-01-09
+    #     # Click the tab
+    #     tab_element.click()
+
+
+    # Updated UI framework removing a canvas by Ecolab - 2025-02-27
+    def regNumber_based_mouseClick(self, driver):
+        
+        # Wait for the canvas or grid to load
+        # WebDriverWait(driver, 10).until(
+        #     EC.presence_of_element_located((By.XPATH, "//*[@id='gridVisistPlanList']/div/canvas"))
+        # )
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.XPATH, "//*[@id='gridVisistPlanList']"))
+        ) # updated ecolab ui 2025-02-27 from [@id='gridVisistPlanList']/div/canvas into [@id='gridVisistPlanList']
         time.sleep(0.5)
         pyautogui.moveTo(430, 465, 0.5) # 접수번호 table row click
         time.sleep(0.5)
@@ -143,6 +170,7 @@ class EcoLabDetailedAutomations:
         time.sleep(1.5) #added 2024-01-09
         # Click the tab
         tab_element.click()
+
 
     def input_meaEndDate(self, driver, meaEndDate):
         time.sleep(1.5)
